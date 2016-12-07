@@ -110,4 +110,33 @@ public class MediaData {
             return 0;
         }
     }//fim: mudarTestMode
+    
+        public VisualizacaoMediaDTO visualizarMedia(int Media_ID, Transacao tr) throws Exception{
+        Connection con = tr.obterConexao();
+
+        String sql = "select Nome, Estado, Tipo_produto, Dinheiro_arrecadado, Total_clicks, Total_visualizacoes, "
+                + "Endereco_REST_API_chatbot, CPC_minimo, TestMode, Data_de_criacao from Media where ID = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, Media_ID);
+        ResultSet rs = ps.executeQuery();
+        System.out.println("Query executada");
+
+        rs.next(); // Antes de comeÃ§ar a ler os resultados, precisa desta linha
+
+        VisualizacaoMediaDTO v = new VisualizacaoMediaDTO();
+        v.setNome(rs.getString("Nome"));
+        v.setEstado(rs.getString("Estado"));
+        v.setTipo_produto(rs.getString("Tipo_produto"));
+        v.setDinheiro_arrecadado(Float.parseFloat(rs.getString("Dinheiro_arrecadado")));
+        v.setTotal_clicks(Integer.parseInt(rs.getString("Total_clicks")));
+        v.setTotal_visualizacoes(Integer.parseInt(rs.getString("Total_visualizacoes")));
+        v.setEndereco_REST_API_chatbot(rs.getString("Endereco_REST_API_chatbot"));
+        v.setCpc_minimo(Integer.parseInt(rs.getString("CPC_minimo")));
+        v.setTestMode(rs.getString("TestMode"));
+        v.setData_de_criacao(rs.getTimestamp("Data_de_cadastro"));
+
+
+        return v;
+    }
+    
 }

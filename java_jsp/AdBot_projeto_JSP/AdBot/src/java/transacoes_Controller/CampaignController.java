@@ -87,4 +87,56 @@ public class CampaignController {
         return null;
     } //getQuebraCampaignMediaDTO
    
+       public Vector getClick_logs(int Campaign_ID) throws Exception {
+
+        Transacao tr = new Transacao();
+        try {
+            tr.beginReadOnly();
+              CampaignData cdata = new CampaignData();
+              Vector cl = cdata.getClick_logs(Campaign_ID, tr);
+            tr.commit();
+            System.out.println("OK");   
+            return cl;
+        } catch(Exception e) {
+            System.out.println("Erro ao pesquisar pelo Log de clicks das campaigns de Advertiser (Camapign_ID = " + Campaign_ID + ") para cada Media");
+            e.printStackTrace();
+        }
+        return null;
+    } //getQuebraCampaignMediaDTO
+
+    
+    public ListagemCampaignsDTO getAtributosCampaignParaMetricasPerformance(int Campaign_ID) throws Exception {
+
+        Transacao tr = new Transacao();
+        try {
+            tr.beginReadOnly();
+              CampaignData cdata = new CampaignData();
+              ListagemCampaignsDTO lc = cdata.getAtributosCampaignParaMetricasPerformance(Campaign_ID, tr);
+            tr.commit();
+            System.out.println("OK");   
+            return lc;
+        } catch(Exception e) {
+            System.out.println("Erro ao pesquisar pelas mÃ©tricas de performance da Campaign (Campaign_ID = " + Campaign_ID + ")");
+            e.printStackTrace();
+        }
+        return null;
+    } //getAtributosCampaignParaMetricasPerformance
+    
+    public VisualizacaoCampaignDTO visualizarCampaign(int Campaign_ID) throws Exception {
+
+        Transacao tr = new Transacao();
+        try {
+            tr.beginReadOnly();
+              CampaignData cdata = new CampaignData();
+              VisualizacaoCampaignDTO vc = cdata.visualizarCampaign(Campaign_ID, tr);
+            tr.commit();
+            System.out.println("OK");   
+            return vc;
+        } catch(Exception e) {
+            System.out.println("Erro ao pesquisar os atributos da Campaign de Advertiser (Campaign_ID = " + Campaign_ID + ")");
+            e.printStackTrace();
+        }
+        return null;
+    } //VisualizacaoCampaignDTO
+    
 }

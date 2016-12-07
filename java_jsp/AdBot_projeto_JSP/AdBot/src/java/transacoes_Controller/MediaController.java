@@ -125,4 +125,21 @@ public class MediaController {
             return 0;
         }
   }
+  
+  public VisualizacaoMediaDTO visualizarMedia(int Media_ID) throws Exception{
+        Transacao tr = new Transacao();
+        try {
+            tr.beginReadOnly();
+              MediaData mdata = new MediaData();
+              VisualizacaoMediaDTO v = mdata.visualizarMedia(Media_ID, tr);
+            tr.commit();
+            System.out.println("OK ");
+            return v;
+        } catch(Exception e) {
+            System.out.println("Erro ao pesquisar Media, Media_ID = " + Media_ID);
+            e.printStackTrace();
+        }
+        return null;
+    }
+  
 }

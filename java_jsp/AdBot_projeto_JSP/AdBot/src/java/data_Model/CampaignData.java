@@ -105,4 +105,111 @@ public class CampaignData {
         return lista;
     } //getQuebraCampaignMediaDTO
     
+    
+        // Adquirir dados necessÃ¡rios Ã  pÃ¡gina Atributos_de_umacampaign.jsp [Gabriel Ren Ishikawa]
+    public VisualizacaoCampaignDTO visualizarCampaign(int Campaign_ID, Transacao tr) throws Exception {
+        
+        Connection con = tr.obterConexao();
+        
+        String sql = "select Nome, ID, clickURL, Bid, Tipo_produto, Marca_produto, Total_visualizacoes, Total_clicks, Gasto_total, Limite_gasto, Autorizacao, Genero_alvo, Idade_alvo_min, Idade_alvo_max, Link_figura_da_impression, Data_de_criacao, Black_ou_whitelist from Campaign where ID = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, Campaign_ID);
+        ResultSet rs = ps.executeQuery();
+        
+
+        rs.next(); // Antes de comeÃ§ar a ler os resultados, precisa desta linha
+        
+        VisualizacaoCampaignDTO vc = new VisualizacaoCampaignDTO();
+        
+        vc.setNome(rs.getString("Nome"));
+        vc.setID(rs.getInt("ID"));
+        vc.setclickURL(rs.getString("clickURL"));
+        vc.setBid(rs.getFloat("Bid"));
+        vc.setTipo_produto(rs.getString("Tipo_produto"));
+        vc.setMarca_produto(rs.getString("Marca_produto"));
+        vc.setTotal_visualizacoes(rs.getInt("Total_visualizacoes"));
+        vc.setTotal_clicks(rs.getInt("Total_clicks"));
+        vc.setGasto_total(rs.getFloat("Gasto_total"));
+        vc.setLimite_gasto(rs.getFloat("Limite_gasto"));
+        vc.setAutorizacao(rs.getInt("Autorizacao"));
+        vc.setGenero_alvo(rs.getString("Genero_alvo"));
+        vc.setIdade_alvo_min(rs.getInt("Idade_alvo_min"));
+        vc.setIdade_alvo_max(rs.getInt("Idade_alvo_max"));
+        vc.setLink_figura_da_impression(rs.getString("Link_figura_da_impression"));
+        vc.setData_de_criacao(rs.getDate("Data_de_criacao"));
+        vc.setBlack_ou_whitelist(rs.getString("Black_ou_whitelist"));
+        
+        
+        return vc;
+        
+        
+        
+    }
+
+
+
+    public Vector getClick_logs(int Campaign_ID, Transacao tr) throws Exception {
+    
+        Connection con = tr.obterConexao();
+        
+        String sql = "select Nome_cliente, Idade_cliente, IP_cliente, Genero_cliente, Gasto_click from Click_log C where C.Campaign_ID = ? ";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, Campaign_ID);
+        ResultSet rs = ps.executeQuery();
+        System.out.println("Query executada");
+        
+        Vector cl = new Vector();
+        while (rs.next()) {
+            
+            Click_logDTO clDTO = new Click_logDTO();
+            
+            clDTO.setNome_cliente(rs.getString("Nome_cliente"));
+            clDTO.setIdade_cliente(rs.getString("Idade_cliente"));
+            clDTO.setIP_cliente(rs.getString("IP_cliente"));
+            clDTO.setGenero_cliente(rs.getString("Genero_cliente"));
+            clDTO.setGasto_click(rs.getFloat("Gasto_click"));
+            
+            cl.add(clDTO);
+        }
+        
+        return cl;
+    }
+    
+
+
+    public ListagemCampaignsDTO getAtributosCampaignParaMetricasPerformance(int Campaign_ID, Transacao tr) throws Exception {
+    
+        Connection con = tr.obterConexao();
+        
+        String sql = "select Nome, ID, ClickURL, Bid, Tipo_produto, Marca_produto, Total_visualizacoes, Total_clicks, Gasto_total, Limite_gasto, Estado, Autorizacao from Campaign where ID = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, Campaign_ID);
+        ResultSet rs = ps.executeQuery();
+    
+        rs.next(); // Antes de comeÃ§ar a ler os resultados, precisa desta linha
+        
+        ListagemCampaignsDTO lc = new ListagemCampaignsDTO();
+        
+        lc.setNome(rs.getString("Nome"));
+        lc.setID(rs.getInt("ID"));
+        lc.setClickURL(rs.getString("ClickURL"));
+        lc.setBid(rs.getFloat("Bid"));
+        lc.setTipo_produto(rs.getString("Tipo_produto"));
+        lc.setMarca_produto(rs.getString("Marca_produto"));
+        lc.setTotal_visualizacoes(rs.getInt("Total_visualizacoes"));
+        lc.setTotal_clicks(rs.getInt("Total_clicks"));
+        lc.setGasto_total(rs.getFloat("Gasto_total"));
+        lc.setLimite_gasto(rs.getFloat("Limite_gasto"));
+        lc.setAutorizacao(rs.getInt("Estado"));
+        lc.setAutorizacao(rs.getInt("Autorizacao"));
+       
+        
+        
+        return lc;
+    
+    
+    
+    }
+    
 }
